@@ -15,6 +15,7 @@ namespace config {
   extern bool BypassBanWord;
   extern bool EnableMultiClient;
   extern bool EnableVisualizer;
+  extern bool PatchInputText;
   extern std::string UgdUrl;
 
   // Packet Hooks

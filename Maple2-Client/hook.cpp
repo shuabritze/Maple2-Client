@@ -124,6 +124,19 @@ namespace hook {
       return true;
     }
 
+    bool PatchInputText(sigscanner::SigScanner& memory) {
+#ifdef _WIN64
+      DWORD_PTR dwLocaleLanguageConstant = 0x140216a71;
+      memory.WriteBytes(dwLocaleLanguageConstant, { 0xBE, 0x7B, 0x0, 0x0, 0x0 }); // Set the value to 0x7B
+#else
+      DWORD_PTR dwLocaleLanguageConstant = 0x00457697;
+      memory.WriteBytes(dwLocaleLanguageConstant, { 0xC7, 0x45, 0xEC, 0x7B, 0x0, 0x0, 0x0 }); // Set the value to 0x7B
+#endif
+
+      std::cout << "PATCH_INPUT_TEXT at " << (void*)dwLocaleLanguageConstant << std::endl;
+      return true;
+    }
+
     void* (__fastcall Initializing)(void* self, void* edx, DWORD* serviceManager, void* a1);
     static auto _Initializing = reinterpret_cast<decltype(&Initializing)>(ServiceManagerHook);
 
@@ -256,6 +269,10 @@ namespace hook {
 
     if (!config::UgdUrl.empty()) {
       bResult &= PatchUgdUrl(memory, config::UgdUrl);
+    }
+
+    if (config::PatchInputText) {
+      bResult &= PatchInputText(memory);
     }
 
 #ifndef _WIN64
