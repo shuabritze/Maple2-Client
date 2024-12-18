@@ -16,6 +16,7 @@ namespace config {
   extern bool EnableMultiClient;
   extern bool EnableVisualizer;
   extern bool PatchInputText;
+  extern bool PatchUGCMusic;
   extern std::string UgdUrl;
 
   // Packet Hooks

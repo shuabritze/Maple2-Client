@@ -127,13 +127,30 @@ namespace hook {
     bool PatchInputText(sigscanner::SigScanner& memory) {
 #ifdef _WIN64
       DWORD_PTR dwLocaleLanguageConstant = 0x140216a71;
-      memory.WriteBytes(dwLocaleLanguageConstant, { 0xBE, 0x7B, 0x0, 0x0, 0x0 }); // Set the value to 0x7B
+      memory.WriteBytes(dwLocaleLanguageConstant, { 0xBE, 0x7F, 0x0, 0x0, 0x0 }); // Set the value to 0x7F
+      DWORD_PTR dwLocaleLanguageReturn = 0x140216d1c;
+      memory.WriteBytes(dwLocaleLanguageReturn, { 0xBF, 0x0, 0x0, 0x0, 0x0 }); // Set the return value to 0x0 to ignore all checks
+#else
+      DWORD_PTR dwLocaleLanguageConstant = 0x00457697;
+      memory.WriteBytes(dwLocaleLanguageConstant, { 0xC7, 0x45, 0xEC, 0x7F, 0x0, 0x0, 0x0 }); // Set the value to 7F
+      DWORD_PTR dwLocaleLanguageReturn = 0x00457744;
+      memory.WriteBytes(dwLocaleLanguageReturn, { 0XB8, 0x0, 0x0, 0x0, 0x0 }); // Set the return value to 0x0 to ignore all checks
+#endif
+
+      std::cout << "PATCH_INPUT_TEXT at " << (void*)dwLocaleLanguageConstant << std::endl;
+      return true;
+    }
+
+    bool PatchUGCMusic(sigscanner::SigScanner& memory) {
+#ifdef _WIN64
+      DWORD_PTR dwUGCMusicFeatureCheck = 0x140a3f5c9;
+      memory.WriteBytes(dwUGCMusicFeatureCheck, { 0x90, 0x90 }); // no-op
 #else
       DWORD_PTR dwLocaleLanguageConstant = 0x00457697;
       memory.WriteBytes(dwLocaleLanguageConstant, { 0xC7, 0x45, 0xEC, 0x7B, 0x0, 0x0, 0x0 }); // Set the value to 0x7B
 #endif
 
-      std::cout << "PATCH_INPUT_TEXT at " << (void*)dwLocaleLanguageConstant << std::endl;
+      std::cout << "PATCH_UGC_MUSIC at " << (void*)dwUGCMusicFeatureCheck << std::endl;
       return true;
     }
 
@@ -273,6 +290,10 @@ namespace hook {
 
     if (config::PatchInputText) {
       bResult &= PatchInputText(memory);
+    }
+
+    if (config::PatchUGCMusic) {
+      bResult &= PatchUGCMusic(memory);
     }
 
 #ifndef _WIN64
