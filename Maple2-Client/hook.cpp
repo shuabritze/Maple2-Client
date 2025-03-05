@@ -133,7 +133,7 @@ namespace hook {
       memory.WriteBytes(dwLocaleLanguageReturn, { 0XB8, 0x0, 0x0, 0x0, 0x0 }); // Set the return value to 0x0 to ignore all checks
 #endif
 
-      std::cout << "PATCH_INPUT_TEXT at " << (void*)dwLocaleLanguageConstant << std::endl;
+      std::cout << "PATCH_INPUT_TEXT at " << (void*)dwLocaleLanguageReturn << std::endl;
       return true;
     }
 
