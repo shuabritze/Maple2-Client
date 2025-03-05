@@ -27,5 +27,7 @@ namespace config {
   extern DWORD* ServiceManager;
   extern DWORD* MS2VisualTracker;
 
+  extern bool EnableCefHook;
+
   bool Load(const std::string& path);
 }
