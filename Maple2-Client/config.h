@@ -28,6 +28,7 @@ namespace config {
   extern DWORD* MS2VisualTracker;
 
   extern bool EnableCefHook;
+  extern bool EnableConsole;
 
   bool Load(const std::string& path);
 }

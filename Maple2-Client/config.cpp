@@ -65,6 +65,7 @@ namespace config {
   bool HookInPacket;
 
   bool EnableCefHook;
+  bool EnableConsole;
 
   DWORD* ServiceManager;
   DWORD* MS2VisualTracker;
@@ -106,6 +107,8 @@ namespace config {
     HookInPacket = AtOrDefault<bool>(cfg, "hook_inpacket", false);
 
     EnableCefHook = AtOrDefault<bool>(cfg, "hook_cef", true);
+
+    EnableConsole = AtOrDefault<bool>(cfg, "enable_console", true);
 
     return true;
   }
